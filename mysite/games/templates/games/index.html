@@ -1,1 +1,19 @@
 This is your home page
+
+<ul>
+
+
+{% for match in allMatches %}
+  {% if match.PLAYER_1_WINS%}
+    <li>{{match.player1.username}}</li>
+  {% endif %}
+  {% if not match.PLAYER_1_WINS %}
+    <li>{{match.player2.username}}
+  {% endif %}
+{% endfor %}
+
+</ul>
+
+{% if allMatches == good %}
+whatever
+{% endif %}
