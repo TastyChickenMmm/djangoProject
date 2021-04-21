@@ -5,7 +5,13 @@ This is your home page
 
 {% for match in allMatches %}
   {% if match.WAITING_FOR_2ND_PLAYER%}
-    <li>{{match.creator.username}} is looking for a player.</li>
+    <form action="game/" method="post">
+      {% csrf_token %}
+      <input type="text" name="acceptGame" value="dummy input"><br>
+      <button type="submit" name="button">
+        {{match.creator.username}} is looking for a player.
+      </button>
+    </form>
   {% endif %}
 {% endfor %}
 
