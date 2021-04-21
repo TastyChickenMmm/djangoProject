@@ -37,7 +37,15 @@ class Match(models.Model):
         related_name = 'player2',
     )
 
+    creator = models.ForeignKey(
+        User,
+        default = 1,
+        on_delete = models.CASCADE,
+        related_name = 'creator',
+    )
+
     PLAYER_1_WINS = models.BooleanField(default = False)
+    WAITING_FOR_2ND_PLAYER = models.BooleanField(default = False)
 
     def __str__(self):
         return self.player1.username + " vs. " + self.player2.username

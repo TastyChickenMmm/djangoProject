@@ -4,16 +4,9 @@ This is your home page
 
 
 {% for match in allMatches %}
-  {% if match.PLAYER_1_WINS%}
-    <li>{{match.player1.username}}</li>
-  {% endif %}
-  {% if not match.PLAYER_1_WINS %}
-    <li>{{match.player2.username}}
+  {% if match.WAITING_FOR_2ND_PLAYER%}
+    <li>{{match.creator.username}} is looking for a player.</li>
   {% endif %}
 {% endfor %}
 
 </ul>
-
-{% if allMatches == good %}
-whatever
-{% endif %}
