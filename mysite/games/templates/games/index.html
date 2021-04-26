@@ -7,7 +7,8 @@ This is your home page
   {% if match.WAITING_FOR_2ND_PLAYER%}
     <form action="game/" method="post">
       {% csrf_token %}
-      <input type="text" name="acceptGame" value="dummy input"><br>
+      <input type="text" name="dummy" value="dummy input"><br>
+      <input type="hidden" name="match" value="{{match}}">
       <button type="submit" name="button">
         {{match.creator.username}} is looking for a player.
       </button>
