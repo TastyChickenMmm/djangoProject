@@ -15,13 +15,19 @@ def home(request):
 
 def game(request):
     # return HttpResponse("Hello, world. You're at the game.")
-    if 'match' in request.POST.keys():
-        print(request.POST['match'])
-        match = request.POST['match']
+    context = {'match':[]}
+
+    if 'matchpk' in request.POST.keys():
+        print(request.POST['matchpk'])
+        matchpk = request.POST['matchpk']
+        match = Match.objects.filter(pk = matchpk)[0]
+        print(match)
+        context['match'] = match
         # match.player1 = match.creator
     else:
         print("MATCH NOT FOUND")
-    return render(request, 'games/game.html', {})
+
+    return render(request, 'games/game.html', context)
 
 def profile(request):
     # return HttpResponse("Hello, world. You're at the profile.")

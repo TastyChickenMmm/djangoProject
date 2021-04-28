@@ -8,7 +8,7 @@ This is your home page
     <form action="game/" method="post">
       {% csrf_token %}
       <input type="text" name="dummy" value="dummy input"><br>
-      <input type="hidden" name="match" value="{{match}}">
+      <input type="hidden" name="matchpk" value="{{match.pk}}">
       <button type="submit" name="button">
         {{match.creator.username}} is looking for a player.
       </button>
