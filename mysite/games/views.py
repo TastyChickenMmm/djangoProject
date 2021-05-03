@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import Profile, Match
 
 
-# Weite views here
+# Write views here
 def home(request):
     # return HttpResponse("Welcome to the home page!")
     allMatches = Match.objects.all()
