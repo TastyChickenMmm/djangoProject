@@ -1,7 +1,8 @@
 This is your home page
 
-<ul>
+{% if loggedIn %}
 
+<ul>
 
 {% for match in allMatches %}
   {% if match.WAITING_FOR_2ND_PLAYER%}
@@ -17,3 +18,24 @@ This is your home page
 {% endfor %}
 
 </ul>
+
+<!-- END OF LOGGED-IN VIEW -->
+{% else %}
+
+<form method="post">
+  {% csrf_token %}
+
+  <div class="form-group">
+    <label for="inputUsername">Username</label>
+    <input type="text" class="form-control" name="inputUsername" id="inputUsername">
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword">Password</label>
+    <input type="password" class="form-control" name="inputPassword" id="inputPassword">
+  </div>
+
+  <button type="submit" class="btn btn-danger">Login</button>
+</form>
+
+{% endif %}
