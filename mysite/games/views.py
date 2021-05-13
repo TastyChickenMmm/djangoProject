@@ -35,6 +35,7 @@ def home(request):
     allProfiles = Profile.objects.all() #like a list
     context = {'allMatches': allMatches,
     'allProfiles': allProfiles,
+    'loggedIn': loggedIn,
     }
     return render(request, 'games/index.html', context)
 

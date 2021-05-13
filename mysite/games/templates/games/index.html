@@ -31,6 +31,13 @@
 
 </ul>
 
+<div class="container-fluid">
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger" name="logout">Logout</button>
+  </form>
+</div>
+
 <!-- END OF LOGGED-IN VIEW -->
 {% else %}
 
