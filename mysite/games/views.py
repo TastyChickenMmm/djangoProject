@@ -15,6 +15,7 @@ def home(request):
             user = authenticate(username=request.POST['inputUsername'],
             password=request.POST['inputPassword'])
             if user is not None:
+                print("Login successful.")
                 login(request, user)
             else:
                 print("Failed login.")
@@ -23,8 +24,10 @@ def home(request):
 
     if request.user.is_authenticated:
         loggedIn = True;
+        print("loggedIn = True")
     else:
         loggedIn = False;
+        print("loggedIn = False")
 
 
     # return HttpResponse("Welcome to the home page!")
