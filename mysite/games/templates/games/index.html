@@ -14,8 +14,16 @@
 
 {% if loggedIn %}
 
-<ul>
+<!-- Request Game Button -->
+<div class="container-fluid">
+  <form action = "game/" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger" name="request_game">Request Game</button>
+  </form>
+</div>
 
+<!-- List of games waiting for a player. -->
+<ul>
 {% for match in allMatches %}
   {% if match.WAITING_FOR_2ND_PLAYER%}
     <form action="game/" method="post">
@@ -28,9 +36,11 @@
     </form>
   {% endif %}
 {% endfor %}
-
 </ul>
 
+
+
+<!-- Logout Button -->
 <div class="container-fluid">
   <form method="post">
     {% csrf_token %}

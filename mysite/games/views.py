@@ -43,6 +43,12 @@ def game(request):
     # return HttpResponse("Hello, world. You're at the game.")
     context = {'match':[]}
 
+    # Create match if user is game creator.
+    if 'request_game' in request.POST.keys():
+        newMatch = Match.objects.get_or_create(player1=request.user, player2=None, creator=request.user, WAITING_FOR_2ND_PLAYER=True)
+        context['request_match'] = newMatch
+
+    # Find match if user is game acceptor.
     if 'matchpk' in request.POST.keys():
         print(request.POST['matchpk'])
         matchpk = request.POST['matchpk']
