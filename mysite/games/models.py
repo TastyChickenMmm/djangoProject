@@ -33,6 +33,7 @@ class Match(models.Model):
     )
     player2 = models.ForeignKey(
         User,
+        null = True,
         on_delete = models.CASCADE,
         related_name = 'player2',
     )
