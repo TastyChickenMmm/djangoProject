@@ -27,9 +27,9 @@ def home(request):
 
     # return HttpResponse("Welcome to the home page!")
     allMatches = Match.objects.all()
-    for match in allMatches:
-        print("Another match between " + match.player1.username + " and " + match.player2.username)
-        print(match.player2.username == "Dummy")
+    # for match in allMatches:
+    #     print("Another match between " + match.player1.username + " and " + match.player2.username)
+    #     print(match.player2.username == "Dummy")
     allProfiles = Profile.objects.all() #like a list
     context = {'allMatches': allMatches,
     'allProfiles': allProfiles,
@@ -38,13 +38,13 @@ def home(request):
     return render(request, 'games/index.html', context)
 
 def game_pending(request):
-    context = {'match':[]}
+    context = {'request_match': None}
 
     # Create match if user is game creator.
     if 'request_game' in request.GET.keys():
         dummyUser = User.objects.get(username = "Dummy")
         newMatch = Match.objects.get_or_create(player1=request.user, player2=dummyUser, creator=request.user)
-        context['request_match'] = newMatch
+        context['request_match'] = newMatch[0]
 
     return render(request, 'games/game_pending.html', context)
 
