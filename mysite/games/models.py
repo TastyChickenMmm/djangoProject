@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 
 # Create your models here.
 
@@ -33,8 +33,6 @@ class Match(models.Model):
     )
     player2 = models.ForeignKey(
         User,
-        null = True,
-        blank = True,
         on_delete = models.CASCADE,
         related_name = 'player2',
     )
@@ -47,7 +45,6 @@ class Match(models.Model):
     )
 
     PLAYER_1_WINS = models.BooleanField(default = False)
-    WAITING_FOR_2ND_PLAYER = models.BooleanField(default = False)
 
-    def __str__(self):
-        return self.player1.username + " vs. " + self.player2.username
+    # def __str__(self):
+    #     return self.player1.username + " vs. " + self.player2.username

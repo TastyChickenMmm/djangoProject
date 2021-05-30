@@ -26,7 +26,7 @@
 <!-- List of games waiting for a player. -->
 <ul>
 {% for match in allMatches %}
-  {% if match.WAITING_FOR_2ND_PLAYER%}
+  {% if match.player2.username == "Dummy"%}
     <form action="game/" method="get">
       {% csrf_token %}
       <input type="text" name="dummy" value="dummy input"><br>

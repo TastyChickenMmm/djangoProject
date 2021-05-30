@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Profile, Match
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth import authenticate, login, logout
 import pprint
 
@@ -32,6 +32,8 @@ def home(request):
 
     # return HttpResponse("Welcome to the home page!")
     allMatches = Match.objects.all()
+    for match in allMatches:
+        print(match.player2.is_anonymous)
     allProfiles = Profile.objects.all() #like a list
     context = {'allMatches': allMatches,
     'allProfiles': allProfiles,
@@ -45,9 +47,9 @@ def game(request):
 
     # Create match if user is game creator.
     if 'request_game' in request.GET.keys():
-        newMatch = Match.objects.get_or_create(player1=request.user, player2=None, creator=request.user, WAITING_FOR_2ND_PLAYER=True)
+        dummyUser = User.objects.get(username = "Dummy")
+        newMatch = Match.objects.get_or_create(player1=request.user, player2=dummyUser, creator=request.user)
         print(request.user)
-        print("ASYBDIALUSHDA")
         context['request_match'] = newMatch
 
     # Find match if user is game acceptor.
@@ -55,7 +57,10 @@ def game(request):
         print(request.GET['matchpk'])
         matchpk = request.GET['matchpk']
         match = Match.objects.filter(pk = matchpk)[0]
-        print(match)
+        match.player2 = request.user
+        match.save()
+        print("PLAYER 2 HAS BEEN CHANGED TOOOOOOOOO")
+        print(match.player2)
         context['match'] = match
         # match.player1 = match.creator
     else:
