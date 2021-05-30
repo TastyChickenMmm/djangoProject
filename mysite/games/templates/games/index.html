@@ -16,7 +16,7 @@
 
 <!-- Request Game Button -->
 <div class="container-fluid">
-  <form action = "game/" method="get">
+  <form action = "game_pending/" method="post">
     {% csrf_token %}
     <input type="hidden" name="requesting" value="True">
     <button type="submit" class="btn btn-danger" name="request_game">Request Game</button>
