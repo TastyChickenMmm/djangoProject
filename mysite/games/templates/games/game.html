@@ -10,11 +10,21 @@
 
 {% if match.GAME_WON %}
   GAME OVER
+
   {% if match.PLAYER_1_WINS%}
     {{match.player1}} won the game!
   {% else %}
     {{match.player2}} won the game!
   {% endif %}
+  
+  <!-- Main Page Button -->
+  <div class="container-fluid">
+    <form action = "../" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger" name="profile">Back to main page</button>
+    </form>
+  </div>
+
 {% else %}
 
 Is Player 1: {{request.GET.isPlayer1}}

@@ -49,6 +49,15 @@
   </form>
 </div>
 
+<!-- View Profile Button -->
+<div class="container-fluid">
+  <form action = "profile/" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="userPK" value="{{thisUser.pk}}">
+    <button type="submit" class="btn btn-danger" name="profile">View Profile</button>
+  </form>
+</div>
+
 <!-- END OF LOGGED-IN VIEW -->
 {% else %}
 

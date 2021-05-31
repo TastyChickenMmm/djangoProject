@@ -15,10 +15,10 @@ class Profile (models.Model):
     def __str__(self):
         return self.user.username
     def numGames(self):
-        return numWins + numLosses
-    def winLossRation(self):
-        if numLosses != 0:
-            return numWins / numLosses
+        return self.numWins + self.numLosses
+    def winLossRatio(self):
+        if self.numLosses != 0:
+            return self.numWins / self.numLosses
         return float('inf')
 
 # multiple games = multiple models

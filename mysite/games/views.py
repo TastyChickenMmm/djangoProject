@@ -26,15 +26,13 @@ def home(request):
         loggedIn = False;
 
 
-    # return HttpResponse("Welcome to the home page!")
     allMatches = Match.objects.all()
-    # for match in allMatches:
-    #     print("Another match between " + match.player1.username + " and " + match.player2.username)
-    #     print(match.player2.username == "Dummy")
     allProfiles = Profile.objects.all() #like a list
+    thisUser = request.user
     context = {'allMatches': allMatches,
     'allProfiles': allProfiles,
     'loggedIn': loggedIn,
+    'thisUser': thisUser,
     }
     return render(request, 'games/index.html', context)
 
@@ -83,5 +81,15 @@ def game(request):
     return render(request, 'games/game.html', context)
 
 def profile(request):
-    # return HttpResponse("Hello, world. You're at the profile.")
-    return render(request, 'games/profile.html', {})
+    context = {'userProfile': None}
+
+
+    if 'userPK' in request.POST.keys():
+        userPK = request.POST['userPK']
+        thisUser = User.objects.filter(pk = userPK)[0]
+        userProfile = Profile.objects.filter(user = thisUser)[0]
+        context['userProfile'] = userProfile
+    else:
+        print("User cannot be found.")
+
+    return render(request, 'games/profile.html', context)
