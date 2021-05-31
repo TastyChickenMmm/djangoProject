@@ -46,5 +46,7 @@ class Match(models.Model):
 
     PLAYER_1_WINS = models.BooleanField(default = False)
 
+    PLAYER_1_MOVE = models.BooleanField(default = True)
+
     # def __str__(self):
     #     return self.player1.username + " vs. " + self.player2.username

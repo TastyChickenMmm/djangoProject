@@ -44,21 +44,25 @@ def game_pending(request):
     if 'request_game' in request.GET.keys():
         dummyUser = User.objects.get(username = "Dummy")
         newMatch = Match.objects.get_or_create(player1=request.user, player2=dummyUser, creator=request.user)
-        context['request_match'] = newMatch[0]
+        context['match'] = newMatch[0]
         print("MATCH CREATED")
-        print(context['request_match'].player2.username == "Dummy")
+        print(context['match'].player2.username == "Dummy")
 
     return render(request, 'games/game_pending.html', context)
 
 def game(request):
-    context = {'match':[]}
+    context = {'match': None}
     if 'matchpk' in request.GET.keys():
+        matchpk = request.GET['matchpk']
+        match = Match.objects.filter(pk = matchpk)[0]
         if 'isPlayer1' in request.GET.keys() and request.GET['isPlayer1'] == "False":
-            matchpk = request.GET['matchpk']
-            match = Match.objects.filter(pk = matchpk)[0]
             match.player2 = request.user
             match.save()
-            context['match'] = match
+        context['match'] = match
+        print("The match is")
+        print(context['match'])
+    else:
+        print("Error in game view: cannot find matchpk in request.GET.keys()")
 
     return render(request, 'games/game.html', context)
 
