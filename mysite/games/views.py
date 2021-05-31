@@ -64,6 +64,11 @@ def game(request):
     else:
         print("Error in game view: cannot find matchpk in request.GET.keys()")
 
+    if 'moved' in request.POST.keys():
+        match.PLAYER_1_MOVE = not match.PLAYER_1_MOVE
+        match.save()
+
+
     return render(request, 'games/game.html', context)
 
 def profile(request):

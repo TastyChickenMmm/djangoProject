@@ -20,11 +20,19 @@ matchpk: {{request.GET.matchpk}}
   You are player 1.
   This is a game requested by {{match.creator}} and you're waiting for a 2nd player.
 
-  <script>
-          setTimeout(function(){
-             window.location.href = '/game/' + '?csrfmiddlewaretoken=3cN6sAToPOwmM9CzxVpKkU8Yq2ZlrnNpTGB7VGixRgKyG5F6elRN7i5YgnShMwTp&dummy=dummy+input&matchpk={{match.pk}}&isPlayer1=True&button=';
-          }, 5000);
-  </script>
+
+  {% if match.PLAYER_1_MOVE%}
+    It's your move!
+    <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="moved" value="some_move">
+      <button type="submit" name="button">
+        Click me!
+      </button>
+    </form>
+  {% else %}
+    Your opponent is thinking...
+  {% endif %}
 
 {% else %}
 <!-- THE USER IS PLAYER 2 -->
@@ -32,11 +40,24 @@ matchpk: {{request.GET.matchpk}}
   You are player 2.
   This is a game between {{match.player1}} and {{match.player2}} with primary key {{request.GET.matchpk}}.
 
-  <script>
-          setTimeout(function(){
-             window.location.href = '/game/' + '?csrfmiddlewaretoken=SfBMxjqpYaWLc6AC5nnNHct8mIw9omyf9y3le9YiIA9ejyibn6CRn3UAxPtFrgz4&matchpk={{match.pk}}&isPlayer1=False&button=';
-          }, 5000);
-  </script>
+  {% if not match.PLAYER_1_MOVE%}
+    It's your move!
+    <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="moved" value="some_move">
+      <button type="submit" name="button">
+        Click me!
+      </button>
+    </form>
+  {% else %}
+    Your opponent is thinking...
+  {% endif %}
 {% endif %}
+
+<script>
+        setTimeout(function(){
+           window.location.reload();
+        }, 5000);
+</script>
 
 </body>
