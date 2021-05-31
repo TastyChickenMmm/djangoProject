@@ -18,7 +18,7 @@ class Profile (models.Model):
         return self.numWins + self.numLosses
     def winLossRatio(self):
         if self.numLosses != 0:
-            return self.numWins / self.numLosses
+            return "{:.2f}".format(self.numWins / self.numLosses)
         return float('inf')
 
 # multiple games = multiple models

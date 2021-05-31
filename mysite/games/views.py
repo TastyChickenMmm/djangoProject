@@ -68,14 +68,23 @@ def game(request):
         winningMoveDieRoll = random.random()
         print("winningMoveDieRoll = " + str(winningMoveDieRoll))
         if winningMoveDieRoll < 0.3:
-            match.GAME_WON = True;
+            match.GAME_WON = True
+            player1Profile = Profile.objects.filter(user = match.player1)[0]
+            player2Profile = Profile.objects.filter(user = match.player2)[0]
+
             if match.player1 == request.user:
-                match.PLAYER_1_WINS = True;
+                match.PLAYER_1_WINS = True
+                player1Profile.numWins += 1
+                player2Profile.numLosses += 1
                 print("PLAYER 1 WINS")
             else:
-                match.PLAYER_1_WINS = False;
+                match.PLAYER_1_WINS = False
+                player1Profile.numLosses += 1
+                player2Profile.numWins += 1
                 print("PLAYER 2 WINS")
         match.save()
+        player1Profile.save()
+        player2Profile.save()
 
 
     return render(request, 'games/game.html', context)
