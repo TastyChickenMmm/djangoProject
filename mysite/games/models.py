@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 class Profile (models.Model):
     numWins = models.IntegerField(default = 0)
     numLosses = models.IntegerField(default = 0)
-    numDraws = models.IntegerField(default = 0)
 
     user = models.OneToOneField(
         User,
@@ -16,7 +15,7 @@ class Profile (models.Model):
     def __str__(self):
         return self.user.username
     def numGames(self):
-        return numWins + numDraws + numLosses
+        return numWins + numLosses
     def winLossRation(self):
         if numLosses != 0:
             return numWins / numLosses
@@ -44,9 +43,13 @@ class Match(models.Model):
         related_name = 'creator',
     )
 
+    PLAYER_1_MOVE = models.BooleanField(default = True)
+
+    GAME_WON = models.BooleanField(default = False)
+
     PLAYER_1_WINS = models.BooleanField(default = False)
 
-    PLAYER_1_MOVE = models.BooleanField(default = True)
+
 
     # def __str__(self):
     #     return self.player1.username + " vs. " + self.player2.username

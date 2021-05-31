@@ -8,8 +8,14 @@
 
 <body>
 
-
-
+{% if match.GAME_WON %}
+  GAME OVER
+  {% if match.PLAYER_1_WINS%}
+    {{match.player1}} won the game!
+  {% else %}
+    {{match.player2}} won the game!
+  {% endif %}
+{% else %}
 
 Is Player 1: {{request.GET.isPlayer1}}
 matchpk: {{request.GET.matchpk}}
@@ -59,5 +65,7 @@ matchpk: {{request.GET.matchpk}}
            window.location.reload();
         }, 5000);
 </script>
+
+{% endif %}
 
 </body>

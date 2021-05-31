@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.auth import authenticate, login, logout
 import pprint
+import random
 
 
 
@@ -66,6 +67,16 @@ def game(request):
 
     if 'moved' in request.POST.keys():
         match.PLAYER_1_MOVE = not match.PLAYER_1_MOVE
+        winningMoveDieRoll = random.random()
+        print("winningMoveDieRoll = " + str(winningMoveDieRoll))
+        if winningMoveDieRoll < 0.3:
+            match.GAME_WON = True;
+            if match.player1 == request.user:
+                match.PLAYER_1_WINS = True;
+                print("PLAYER 1 WINS")
+            else:
+                match.PLAYER_1_WINS = False;
+                print("PLAYER 2 WINS")
         match.save()
 
 
