@@ -6,76 +6,84 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-
-{% if match.GAME_WON %}
-  GAME OVER
-
-  {% if match.PLAYER_1_WINS%}
-    {{match.player1}} won the game!
-  {% else %}
-    {{match.player2}} won the game!
-  {% endif %}
-  
-  <!-- Main Page Button -->
+<body style = "background-color: #333333; color: #eeeeee">
   <div class="container-fluid">
-    <form action = "../" method="post">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger" name="profile">Back to main page</button>
-    </form>
+
+    {% if match.GAME_WON %}
+    <!-- GAME OVER - Display necessary messages -->
+      <p style = "font-size: 100px">GAME OVER</p>
+
+      {% if match.PLAYER_1_WINS%}
+        <p style = "font-size: 20px">{{match.player1}} won the game!</p>
+      {% else %}
+        <p style = "font-size: 20px">{{match.player2}} won the game!</p>
+      {% endif %}
+
+      <!-- Main Page Button -->
+      <div class="container-fluid">
+        <form action = "../" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger" name="profile">Back to main page</button>
+        </form>
+      </div>
+
+    {% else %}
+    <!-- GAME STILL ONGOING -->
+
+    <!-- THE USER IS PLAYER 1 -->
+    {% if request.GET.isPlayer1 == "True"%}
+
+      {% if match.player2.username == "Dummy"%}
+          <!-- Nobody has accepted the game yet. -->
+          <p style = "font-size:20px">Waiting for a second player...</p>
+      {% else %}
+        <!-- Somebody has accepted the game. The game has begun. -->
+        <p style = "font-size:20px">{{match.player1}} vs. {{match.player2}}</p>
+
+        {% if match.PLAYER_1_MOVE %}
+          <!-- User's move. -->
+          <p style = "font-size:20px">It's your move!</p>
+          <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="moved" value="some_move">
+            <button type="submit" name="button">
+              <p style = "font-size: 50">Click me!</p>
+            </button>
+          </form>
+        {% else %}
+          <!-- Opponent's move -->
+          <p style = "font-size:20px">Your opponent is thinking...</p>
+        {% endif %}
+
+      {% endif %}
+    {% else %}
+    <!-- THE USER IS PLAYER 2 -->
+      <p style = "font-size:20px">{{match.player2}} vs. {{match.player1}}</p>
+
+      {% if not match.PLAYER_1_MOVE%}
+        <!-- User's move -->
+        <p style = "font-size:20px">It's your move!</p>
+        <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="moved" value="some_move">
+          <button type="submit" name="button">
+            <p style = "font-size: 50">Click me!</p>
+          </button>
+        </form>
+      {% else %}
+        <!-- Opponent's move -->
+        <p style = "font-size:20px">Your opponent is thinking...</p>
+      {% endif %}
+    {% endif %}
+
+    <!-- Refreshes every 5 seconds in case the opponent moved. -->
+    <script>
+            setTimeout(function(){
+               window.location.reload();
+            }, 5000);
+    </script>
+
+    {% endif %}
+
   </div>
-
-{% else %}
-
-Is Player 1: {{request.GET.isPlayer1}}
-matchpk: {{request.GET.matchpk}}
-
-<!-- THE USER IS PLAYER 1 -->
-{% if request.GET.isPlayer1 == "True"%}
-
-  You are player 1.
-  This is a game requested by {{match.creator}} and you're waiting for a 2nd player.
-
-
-  {% if match.PLAYER_1_MOVE%}
-    It's your move!
-    <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="moved" value="some_move">
-      <button type="submit" name="button">
-        Click me!
-      </button>
-    </form>
-  {% else %}
-    Your opponent is thinking...
-  {% endif %}
-
-{% else %}
-<!-- THE USER IS PLAYER 2 -->
-
-  You are player 2.
-  This is a game between {{match.player1}} and {{match.player2}} with primary key {{request.GET.matchpk}}.
-
-  {% if not match.PLAYER_1_MOVE%}
-    It's your move!
-    <form onsubmit="setTimeout(function () { window.location.reload(); }, 10)" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="moved" value="some_move">
-      <button type="submit" name="button">
-        Click me!
-      </button>
-    </form>
-  {% else %}
-    Your opponent is thinking...
-  {% endif %}
-{% endif %}
-
-<script>
-        setTimeout(function(){
-           window.location.reload();
-        }, 5000);
-</script>
-
-{% endif %}
-
 </body>

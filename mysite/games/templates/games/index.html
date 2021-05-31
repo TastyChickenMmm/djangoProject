@@ -6,13 +6,46 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
-<body>
+<body style = "background-color: #333333; color: #eeeeee">
 
-<div class="container-fluid">
-  <p>This is your home page</p>
-</div>
-
+<!-- Nav bar only shows when user is logged in-->
 {% if loggedIn %}
+<!-- Nav Bar -->
+      <div class="row" style="font-size:20px; background-color: #111111">
+        <nav class = "navbar navbar-expand-md">
+          <ul class="nav navbar-nav">
+            <li>
+              <!-- View Profile Button -->
+              <form action = "profile/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="userPK" value="{{thisUser.pk}}">
+                <button type="submit" class="btn btn-danger" name="profile">View Profile</button>
+              </form>
+            </li>
+            <li class="nav-item">
+              <!-- Logout Button -->
+                <form method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger" name="logout">Logout</button>
+                </form>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <br />
+{% endif %}
+
+<!-- Welcome to CLICK.IO -->
+<div class="container-fluid">
+  <div>
+    <h1>Welcome to CLICK.IO!</h1>
+    <h4>The worlds most popular platform for your competitive luck-based clicking needs!</h4>
+  </div>
+  <br />
+
+<!-- START OF LOGGED-IN VIEW -->
+{% if loggedIn %}
+
 
 <!-- Request Game Button -->
 <div class="container-fluid">
@@ -23,10 +56,15 @@
   </form>
 </div>
 
+
+<p>
+  Or, join a match that someone else has requested! These are the matches in need of a player:
+</p>
 <!-- List of games waiting for a player. -->
 <ul>
 {% for match in allMatches %}
   {% if match.player2.username == "Dummy"%}
+  <!-- Loop through all matches and only display those that are waiting for a player. -->
     <form action="game/" method="get">
       {% csrf_token %}
       <input type="hidden" name="matchpk" value="{{match.pk}}">
@@ -39,35 +77,11 @@
 {% endfor %}
 </ul>
 
-
-
-<!-- Logout Button -->
-<div class="container-fluid">
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger" name="logout">Logout</button>
-  </form>
-</div>
-
-<!-- View Profile Button -->
-<div class="container-fluid">
-  <form action = "profile/" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="userPK" value="{{thisUser.pk}}">
-    <button type="submit" class="btn btn-danger" name="profile">View Profile</button>
-  </form>
-</div>
-
-<!-- Refreshes every 5 seconds -->
-<script>
-        setTimeout(function(){
-           window.location.reload();
-        }, 5000);
-</script>
-
 <!-- END OF LOGGED-IN VIEW -->
 {% else %}
+<!-- START OF LOGGED-OUT VIEW -->
 
+<!-- Login form -->
 <div class="container-fluid">
   <form method="post">
     {% csrf_token %}
@@ -86,7 +100,8 @@
   </form>
 </div>
 
-
+<!-- END OF LOGGED-OUT VIEW -->
 {% endif %}
 
+</div>
 </body>

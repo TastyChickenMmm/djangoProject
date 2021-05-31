@@ -9,8 +9,8 @@ import random
 
 
 
-# Write views here
 def home(request):
+    # Check whether user has just logged in or out.
     if request.POST:
         if 'inputUsername' in request.POST.keys():
             user = authenticate(username=request.POST['inputUsername'],
@@ -20,6 +20,7 @@ def home(request):
         elif 'logout' in request.POST.keys():
             logout(request)
 
+    # Determine if user is logged in.
     if request.user.is_authenticated:
         loggedIn = True;
     else:
@@ -27,10 +28,8 @@ def home(request):
 
 
     allMatches = Match.objects.all()
-    allProfiles = Profile.objects.all() #like a list
     thisUser = request.user
     context = {'allMatches': allMatches,
-    'allProfiles': allProfiles,
     'loggedIn': loggedIn,
     'thisUser': thisUser,
     }
@@ -51,10 +50,13 @@ def game_pending(request):
 
 def game(request):
     context = {'match': None}
+
+    # Determine which match this is.
     if 'matchpk' in request.GET.keys():
         matchpk = request.GET['matchpk']
         match = Match.objects.filter(pk = matchpk)[0]
         if 'isPlayer1' in request.GET.keys() and request.GET['isPlayer1'] == "False":
+            # This is player 2, so update the match info.
             match.player2 = request.user
             match.save()
         context['match'] = match
@@ -63,40 +65,51 @@ def game(request):
     else:
         print("Error in game view: cannot find matchpk in request.GET.keys()")
 
+    # Someone just moved
     if 'moved' in request.POST.keys():
-        match.PLAYER_1_MOVE = not match.PLAYER_1_MOVE
-        winningMoveDieRoll = random.random()
+        match.PLAYER_1_MOVE = not match.PLAYER_1_MOVE # Update whose move it is.
+
+        # Apply algorithm to determine if it's a winning move.
+        winningMoveDieRoll = random.random() # Random number from 0 to 1.
         print("winningMoveDieRoll = " + str(winningMoveDieRoll))
         if winningMoveDieRoll < 0.3:
-            match.GAME_WON = True
+            # This is a winning move.
+
+            match.GAME_WON = True # Update match
+
+            # Locate the profiles of players
             player1Profile = Profile.objects.filter(user = match.player1)[0]
             player2Profile = Profile.objects.filter(user = match.player2)[0]
 
+            # Update profiles
             if match.player1 == request.user:
+                # User is player 1
                 match.PLAYER_1_WINS = True
                 player1Profile.numWins += 1
                 player2Profile.numLosses += 1
                 print("PLAYER 1 WINS")
             else:
+                # User is player 2
                 match.PLAYER_1_WINS = False
                 player1Profile.numLosses += 1
                 player2Profile.numWins += 1
                 print("PLAYER 2 WINS")
+
+        # Save changes to models
         match.save()
         player1Profile.save()
         player2Profile.save()
-
 
     return render(request, 'games/game.html', context)
 
 def profile(request):
     context = {'userProfile': None}
 
-
+    # Locate profile from the user's pk
     if 'userPK' in request.POST.keys():
-        userPK = request.POST['userPK']
-        thisUser = User.objects.filter(pk = userPK)[0]
-        userProfile = Profile.objects.filter(user = thisUser)[0]
+        userPK = request.POST['userPK'] # Find user's pk
+        thisUser = User.objects.filter(pk = userPK)[0] # Locate user from user's pk
+        userProfile = Profile.objects.filter(user = thisUser)[0] # Locate profile from user
         context['userProfile'] = userProfile
     else:
         print("User cannot be found.")

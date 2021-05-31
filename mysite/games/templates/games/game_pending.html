@@ -8,9 +8,13 @@
 
 <body>
 
+<!-- This is just an in-between page which occurs right after a user requests a game,
+  and right before they arrive at the game page. Its sole purpose is to create
+  a new Match object. -->
 
 This is a game requested by {{match.player1.username}} and you're waiting for a 2nd player.
 
+<!-- Immediately redirect to game.html -->
 <script>
         setTimeout(function(){
            window.location.href = '/game/' + '?csrfmiddlewaretoken=3cN6sAToPOwmM9CzxVpKkU8Yq2ZlrnNpTGB7VGixRgKyG5F6elRN7i5YgnShMwTp&dummy=dummy+input&matchpk={{match.pk}}&isPlayer1=True&button=';

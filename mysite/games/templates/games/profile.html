@@ -5,17 +5,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-<body>
-  Profile page.
+<body style = "background-color: #333333; color: #eeeeee; font-size: 15px">
+<div class="container-fluid">
 
-  User: {{userProfile.user.username}}
+  <h1>Profile: {{userProfile.user.username}}</h1>
 
-  Stats:
+  <hr />
 
-  Wins: {{userProfile.numWins}}
-  Losses: {{userProfile.numLosses}}
-  Total Games: {{userProfile.numGames}}
-  Win/Loss Ratio: {{userProfile.winLossRatio}}
+  <h3>Stats:</h3>
+
+  <p>Wins: {{userProfile.numWins}} <br />
+  Losses: {{userProfile.numLosses}} <br />
+  Total Games: {{userProfile.numGames}} <br />
+  Win/Loss Ratio: {{userProfile.winLossRatio}}</p>
+
 
   <!-- Main Page Button -->
   <div class="container-fluid">
@@ -25,4 +28,5 @@
     </form>
   </div>
 
+</div>
 </body>
